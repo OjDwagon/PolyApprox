@@ -178,7 +178,7 @@ class Complex
         void normalizePolar() const; // Normalize r then theta in polar form
         void normalizeTheta() const; 
 
-        bool doubleComp(double a, double b) const;
+        bool static doubleComp(double a, double b);
    
 
 };

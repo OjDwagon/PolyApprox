@@ -511,7 +511,7 @@ bool Complex::isReal() const
     return doubleComp(y_, 0);
 }
 
-bool Complex::doubleComp(double a, double b) const
+bool Complex::doubleComp(double a, double b)
 {
     return ((a - b) < epsilon_) && ((b - a) < epsilon_);
 }
