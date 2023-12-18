@@ -69,7 +69,7 @@ class ComplexPolynomial
         static ComplexPolynomial distributiveMultiplication(const ComplexPolynomial& lhs, const ComplexPolynomial& rhs);
 
         // Fast discrete fourier transform multiplication
-        static ComplexPolynomial discreteFourierTransformMultiplication(const ComplexPolynomial& lhs, const ComplexPolynomial& rhs);
+        static ComplexPolynomial discreteFourierTransformMultiplication(ComplexPolynomial lhs, ComplexPolynomial rhs);
 
     protected:
         unsigned int degree_;
@@ -88,18 +88,17 @@ class ComplexPolynomial
         //  * @param rootsOfUnity a shared array of roots of unity to prevent them from being recalculated
         //  * @return a vector of the Complex numbers storing f evaluated at the roots of unity (in order going counter-clockwise around the unit circle)
         // */
-        // template <typename V>
-        // std::vector<Complex> evaluateAtRootsOfUnity(const GenericPolynomial<V, TrueType, Equality>& f, unsigned int n, std::vector<std::vector<Complex>>& rootsOfUnity) const; 
+        static std::vector<Complex> evaluateAtRootsOfUnity(const ComplexPolynomial& f, unsigned int n, const std::vector<std::vector<Complex>>& rootsOfUnity); 
 
-        // /**
-        //  * Calculates the nth roots of unity
-        //  * 
-        //  * @param n the number of roots of unity to calculate
-        //  * @return a vector of the roots of unity (ordered going counter-clockwise around the unit circle)
-        // */
-        // std::vector<Complex> calcRootsOfUnity(unsigned int n) const;
+        /**
+         * Calculates the nth roots of unity
+         * 
+         * @param n the number of roots of unity to calculate
+         * @return a vector of the roots of unity (ordered going counter-clockwise around the unit circle starting from 0)
+        */
+        static std::vector<Complex> calcRootsOfUnity(unsigned int n);
 
-        // unsigned int getNextPowerOfTwo(unsigned int n) const;
+        static unsigned int getNextPowerOfTwo(unsigned int n);
 };
 
 /**
