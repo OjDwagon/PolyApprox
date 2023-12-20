@@ -157,7 +157,12 @@ ComplexPolynomial& ComplexPolynomial::operator-=(const Complex& rhs)
 
 ComplexPolynomial ComplexPolynomial::operator*(const ComplexPolynomial& rhs) const
 {
-    return ComplexPolynomial(); // Placeholder
+    if(max(degree_, rhs.degree_) > 190){ // Discrete Fourier transform is more efficient once multiplying over 190 degrees
+        return discreteFourierTransformMultiplication(*this, rhs);
+    }
+    else{
+        return distributiveMultiplication(*this, rhs);
+    }
 }
 
 ComplexPolynomial ComplexPolynomial::operator*(int rhs) const
@@ -197,7 +202,11 @@ ComplexPolynomial ComplexPolynomial::operator*(const Complex& rhs) const
 
 ComplexPolynomial& ComplexPolynomial::operator*=(const ComplexPolynomial& rhs)
 {
-    return *this; // Placeholder
+    ComplexPolynomial product = *this * rhs;
+    coefficients_ = product.coefficients_;
+    degree_ = product.degree_;
+
+    return *this;
 }
 
 ComplexPolynomial& ComplexPolynomial::operator*=(int rhs)
@@ -205,7 +214,7 @@ ComplexPolynomial& ComplexPolynomial::operator*=(int rhs)
     for(unsigned int i = 0; i <= degree_; ++i){
         coefficients_[i] *= rhs;
     }
-
+    
     unpad();
 
     return *this;
@@ -312,6 +321,26 @@ ComplexPolynomial ComplexPolynomial::squared() const
     return (*this) * (*this);
 }
 
+ComplexPolynomial ComplexPolynomial::exponentiate(unsigned int power) const
+{   
+    // Recursively multiply
+    if(power == 0){ // Base Case
+        return ComplexPolynomial({1});
+    }
+    else if(power == 1){ // Base Case
+        return *this;
+    }
+    else if(power == 2){ // Base Case
+        return this->squared();
+    }
+    else if(power % 2 == 0){ // Even Recursive Case
+        return (exponentiate(power / 2)).squared();
+    }
+    else{ // Odd Recursive case
+        return *this * (exponentiate(power / 2)).squared();
+    }
+}
+
 Complex ComplexPolynomial::getCoefficient(unsigned int power) const
 {
     if(power <= degree_){
@@ -352,8 +381,11 @@ ComplexPolynomial ComplexPolynomial::distributiveMultiplication(const ComplexPol
     return product;
 }
 
-ComplexPolynomial ComplexPolynomial::discreteFourierTransformMultiplication(ComplexPolynomial lhs, ComplexPolynomial rhs)
-{
+ComplexPolynomial ComplexPolynomial::discreteFourierTransformMultiplication(const ComplexPolynomial& inLhs, const ComplexPolynomial& inRhs)
+{   
+    ComplexPolynomial lhs(inLhs);
+    ComplexPolynomial rhs(inRhs);
+
     // Assumes lhs is a higher degree, pad up to the next power of 2 for even recursive calls
     unsigned int n = getNextPowerOfTwo(lhs.degree_ + 1); // n is the number of coefficients in each function
     lhs.pad(n - 1);

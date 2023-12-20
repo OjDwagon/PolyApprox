@@ -12,14 +12,15 @@ typedef ComplexPolynomial Polynomial;
 
 int main()
 {
-    // evaluationTests();
-    // comparisonTests();
-    // additionTests();
-    // subtractionTests();
-    // basicMultiplicationTests();
-    // distributiveMultiplicationTests();
+    evaluationTests();
+    comparisonTests();
+    additionTests();
+    subtractionTests();
+    basicMultiplicationTests();
+    distributiveMultiplicationTests();
     fourierMultiplicationTests();
-    // derivativeTests();
+    derivativeTests();
+    exponentiationTests();
     
 
     cout << "All tests passed." << endl;
@@ -127,4 +128,12 @@ void comparisonTests()
     assert(p1 == p2);
 }
 
+void exponentiationTests()
+{
+    Polynomial p1({1, 1});
 
+    assert(p1.exponentiate(5) == Polynomial({1, 5, 10, 10, 5, 1}));
+    assert(p1.exponentiate(6) == Polynomial({1, 6, 15, 20, 15, 6, 1}));
+
+    assert(Polynomial({-1, 1}).exponentiate(10) == Polynomial({1, -10, 45, -120, 210, -252, 210, -120, 45, -10, 1}));
+}

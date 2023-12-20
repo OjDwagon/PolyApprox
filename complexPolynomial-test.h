@@ -6,3 +6,4 @@ void distributiveMultiplicationTests();
 void fourierMultiplicationTests();
 void derivativeTests();
 void comparisonTests();
+void exponentiationTests();
