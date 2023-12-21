@@ -34,6 +34,14 @@ class Complex
         Complex(double xToBe, double yToBe, double rToBe, double thetaToBe);
 
         /**
+         * Constructor for a Complex number given only 1 coordinate, defaults to 0
+         * Since only one coordinate is provided, treats it as a real number
+         * 
+         * @param x the real(x) component 
+        */
+        Complex(double x);
+
+        /**
          * Getter for x cartesian coordinate, will update cartesian coordinates if stale for faster operations later
         */
         double getCartesianX() const;

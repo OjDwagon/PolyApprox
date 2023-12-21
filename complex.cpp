@@ -27,6 +27,12 @@ Complex::Complex(double xToBe, double yToBe, double rToBe, double thetaToBe):
     normalizePolar();
 }
 
+Complex::Complex(double x):
+    x_(x), y_(0), cartesianStale_(false), polarStale_(true)
+{
+
+}
+
 double Complex::getCartesianX() const
 {
     validateCartesian();    
