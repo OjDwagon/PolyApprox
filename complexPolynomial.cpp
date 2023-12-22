@@ -6,22 +6,14 @@
 #include <sstream>
 #include <iostream>
 #include <math.h>
-#include <cassert>
 
 using namespace std;
 
 double ComplexPolynomial::epsilon_ = 0.000001;
 
 ComplexPolynomial::ComplexPolynomial():
-    degree_(0), coefficients_({0})
+    degree_(0), coefficients_({Complex()})
 {
-
-}
-
-ComplexPolynomial::ComplexPolynomial(const vector<Complex>& coefficients):
-    degree_(coefficients.size() - 1), coefficients_(coefficients)
-{
-    unpad();
 
 }
 
@@ -113,7 +105,19 @@ ComplexPolynomial& ComplexPolynomial::operator+=(const Complex& rhs)
 
 ComplexPolynomial ComplexPolynomial::operator-(const ComplexPolynomial& rhs) const
 {
-    return *this + -1 * rhs;
+    ComplexPolynomial lhs = *this; // Make a copy
+
+    if(rhs.degree_ > degree_){ // Pad up if necessary
+        lhs.pad(rhs.degree_);
+    }
+
+    for(unsigned int i = 0; i <= rhs.degree_; ++i){ // Add all the coefficients
+        lhs.coefficients_[i] -= rhs.coefficients_[i];
+    }
+
+    lhs.unpad();
+
+    return lhs; // Return it
 }
 
 ComplexPolynomial ComplexPolynomial::operator-(int rhs) const
@@ -133,7 +137,16 @@ ComplexPolynomial ComplexPolynomial::operator-(const Complex& rhs) const
 
 ComplexPolynomial& ComplexPolynomial::operator-=(const ComplexPolynomial& rhs)
 {
-    *this += -1 * rhs;
+    if(rhs.degree_ > degree_){ // Pad up if necessary
+        pad(rhs.degree_);
+    }
+
+    for(unsigned int i = 0; i <= rhs.degree_; ++i){ // Add all the coefficients
+        coefficients_[i] -= rhs.coefficients_[i];
+    }
+
+    unpad();
+
     return *this;
 }
 
@@ -325,7 +338,7 @@ ComplexPolynomial ComplexPolynomial::exponentiate(unsigned int power) const
 {   
     // Recursively multiply
     if(power == 0){ // Base Case
-        return ComplexPolynomial({1});
+        return ComplexPolynomial(vector<Complex>({Complex(1, 0)}));
     }
     else if(power == 1){ // Base Case
         return *this;
@@ -347,7 +360,7 @@ Complex ComplexPolynomial::getCoefficient(unsigned int power) const
         return coefficients_[power];
     }
     else{
-        return 0;
+        return Complex();
     }
 }
 

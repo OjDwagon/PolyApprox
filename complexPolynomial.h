@@ -13,16 +13,27 @@ class ComplexPolynomial
 {
     public:
         /**
-         * Default constructor for a ComplexPolynomial, deafults to the constant 0
+         * Default constructor for a ComplexPolynomial, defaults to the constant 0
         */
         ComplexPolynomial();
 
         /**
          * ComplexPolynomial constructor given coefficients
          * 
-         * @param coefficients a vector of complex numbers, the ith element of the vector is used as the coefficient for x^i
+         * @tparam V the type of the coefficients, must support casting to a Complex number
+         * @param coefficients a vector of coefficeints, the ith element of the vector is used as the coefficient for x^i
         */
-        ComplexPolynomial(const std::vector<Complex>& coefficients);
+        template <typename V>
+        ComplexPolynomial(const std::vector<V>& coefficients);
+
+        /**
+         * ComplexPolynomial constructor given coefficients
+         * 
+         * @tparam V the type of the coefficients, must support casting to a Complex number
+         * @param coefficients an initinialization of complex numbers, the ith element of the vector is used as the coefficient for x^i
+        */
+        template <typename V>
+        ComplexPolynomial(const std::initializer_list<V>& coefficients);       
 
         /**
          * Sets the coefficient corresponding to x^power to be val, does nothing if a negative power is given
@@ -278,6 +289,24 @@ bool operator==(double lhs, const ComplexPolynomial& rhs);
 bool operator!=(double lhs, const ComplexPolynomial& rhs);
 bool operator==(int lhs, const ComplexPolynomial& rhs);
 bool operator!=(int lhs, const ComplexPolynomial& rhs);
+
+template <typename V>
+ComplexPolynomial::ComplexPolynomial(const std::vector<V>& coefficients):
+    degree_(coefficients.size() - 1), coefficients_(coefficients.begin(), coefficients.end())
+{
+    unpad();
+}
+
+template <typename V>
+ComplexPolynomial::ComplexPolynomial(const std::initializer_list<V>& coefficients):
+    degree_(coefficients.size() - 1)
+{
+    for(const V& c: coefficients){
+        coefficients_.push_back(Complex(c));
+    }
+
+    unpad();
+}
 
 template <typename V>
 Complex ComplexPolynomial::evaluate(V x) const
