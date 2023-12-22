@@ -122,17 +122,23 @@ ComplexPolynomial ComplexPolynomial::operator-(const ComplexPolynomial& rhs) con
 
 ComplexPolynomial ComplexPolynomial::operator-(int rhs) const
 {
-    return *this + -1 * rhs;
+    ComplexPolynomial lhs = *this; // Make a copy
+    lhs.coefficients_[0] -= rhs; // Add the constant
+    return lhs; // Return it
 }
 
 ComplexPolynomial ComplexPolynomial::operator-(double rhs) const
 {
-    return *this + -1 * rhs;
+    ComplexPolynomial lhs = *this; // Make a copy
+    lhs.coefficients_[0] -= rhs; // Add the constant
+    return lhs; // Return it
 }
 
 ComplexPolynomial ComplexPolynomial::operator-(const Complex& rhs) const
 {
-    return *this + -1 * rhs;
+    ComplexPolynomial lhs = *this; // Make a copy
+    lhs.coefficients_[0] -= rhs; // Add the constant
+    return lhs; // Return it
 }
 
 ComplexPolynomial& ComplexPolynomial::operator-=(const ComplexPolynomial& rhs)
