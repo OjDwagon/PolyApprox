@@ -2,6 +2,7 @@
 #define GENERIC_POLYNOMIAL_H
 
 #include <vector>
+#include <functional>
 
 /**
  * @brief A generic polynomial class modeling polynomials of non-negative degree and their operators (excluding division)
@@ -17,6 +18,7 @@
  * @tparam TrueType, the type of the inheriting child, used to ensure methods return the appropriate child type
  *          children must implement the TrueType operator*(const TrueType&) method
  *          to implement TrueType operator*(const T&) method, children can cast this to be a parent and use the parent implementation
+ *          children must also implement bool equals(const T& a, const T& b)
 */
 template <typename T, typename TrueType>
 class GenericPolynomial
@@ -135,6 +137,13 @@ class GenericPolynomial
         TrueType getDerivative() const; 
 
         /**
+         * Getter for the coefficients of the polynomial
+         * 
+         * @returns the coefficients of the polynomial, the ith term of the vector is the coefficient for x^i
+        */
+        std::vector<T> getCoefficients() const;
+
+        /**
          * Returns the product of 2 polynomials, implemented using standard distribution in quadratic time
          * 
          * @param lhs the first polynomial to multiply
@@ -147,8 +156,8 @@ class GenericPolynomial
     protected:
         unsigned int degree_;
         std::vector<T> coefficients_;
-        static double epsilon_; // Constant used for double comparison, doubles different by less than this amount are considered equal
-
+        static std::function<bool(const T&, const T&)> comp;
+        
         /**
          * Removes all leading zero coefficients (ignoring the constant coefficent x^0)
         */
@@ -160,15 +169,6 @@ class GenericPolynomial
          * @param degree the desired degree of the polynomial after the padding operation
         */
         void pad(unsigned int degree);
-
-        /**
-         * Helper function for double comparison, returns true if the doubels are within epsilon_ of each other
-         * 
-         * @param a, b the numbers to be compared
-         * 
-         * @returns true if a and b are within epsilon_ of each other
-        */
-        bool static doubleComp(double a, double b);
 };
 
 template<typename T, typename TrueType> template <typename V>
@@ -382,7 +382,7 @@ bool GenericPolynomial<T, TrueType>::operator==(const TrueType& rhs) const
 
     // Check if all coefficients match
     for(unsigned int i = 0; i < coefficients_.size(); ++i){
-        if(coefficients_[i] != rhs.coefficients_[i]){
+        if(!comp(coefficients_[i], rhs.coefficients_[i])){
             return false;
         }
     }
@@ -401,7 +401,7 @@ bool GenericPolynomial<T, TrueType>::operator!=(const TrueType& rhs) const
 
     // Check if all coefficients match
     for(unsigned int i = 0; i < coefficients_.size(); ++i){
-        if(coefficients_[i] == rhs.coefficients_[i]){
+        if(comp(coefficients_[i], rhs.coefficients_[i])){
             return false;
         }
     }
@@ -413,7 +413,7 @@ template<typename T, typename TrueType>
 bool GenericPolynomial<T, TrueType>::operator==(double rhs) const
 {
     if(degree_ == 0){
-        return rhs == coefficients_[0];
+        return comp(rhs, coefficients_[0]);
     }
 
     return false;
@@ -426,7 +426,7 @@ bool GenericPolynomial<T, TrueType>::operator!=(double rhs) const
         return true;
     }
 
-    return rhs != coefficients_[0];
+    return !comp(rhs, coefficients_[0]);
 }
 
 template<typename T, typename TrueType>
@@ -452,8 +452,6 @@ bool operator!=(int lhs, const TrueType& rhs)
 {
     return rhs != lhs;
 }
-
-
 
 template<typename T, typename TrueType>
 TrueType GenericPolynomial<T, TrueType>::squared() const
@@ -512,6 +510,12 @@ TrueType GenericPolynomial<T, TrueType>::getDerivative() const
 }
 
 template<typename T, typename TrueType>
+std::vector<T> GenericPolynomial<T, TrueType>::getCoefficients() const
+{
+    return coefficients_;
+}
+
+template<typename T, typename TrueType>
 TrueType GenericPolynomial<T, TrueType>::distributiveMultiplication(const TrueType& lhs, const TrueType& rhs)
 {
     TrueType product;
@@ -545,7 +549,7 @@ void GenericPolynomial<T, TrueType>::unpad()
 {
     int counter = 0;
     for(unsigned int i = degree_; i > 0; --i){
-        if(coefficients_[i] == T()){
+        if(comp(coefficients_[i], T())){
             ++counter;
         }
         else{
@@ -560,9 +564,6 @@ void GenericPolynomial<T, TrueType>::unpad()
 }
 
 template<typename T, typename TrueType>
-bool GenericPolynomial<T, TrueType>::doubleComp(double a, double b)
-{
-    return ((a - b) < epsilon_) && ((b - a) < epsilon_);
-}
+std::function<bool(const T&, const T&)> GenericPolynomial<T, TrueType>::comp = std::equal_to<T>();
 
 #endif

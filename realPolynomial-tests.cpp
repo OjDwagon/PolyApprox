@@ -17,7 +17,7 @@ int main()
     subtractionTests();
     basicMultiplicationTests();
     distributiveMultiplicationTests();
-    // fourierMultiplicationTests();
+    fourierMultiplicationTests();
     derivativeTests();
     exponentiationTests();
 
@@ -103,14 +103,14 @@ void distributiveMultiplicationTests()
     // assert(Polynomial::distributiveMultiplication(p2, p2) == Polynomial({Complex(-1, 0), Complex(-6, 2), Complex(-8, 6)}));
 }
 
-// void fourierMultiplicationTests()
-// {
-//     // Polynomial p1({1, 2, 3, 4, 5});
-//     // assert(Polynomial::discreteFourierTransformMultiplication(p1, p1) == Polynomial({1, 4, 10, 20, 35, 44, 46, 40, 25}));
-//     // assert(Polynomial::discreteFourierTransformMultiplication(Polynomial({1, 1}), Polynomial({1, 1})) == Polynomial({1, 2, 1}));
-//     // assert(Polynomial::discreteFourierTransformMultiplication(Polynomial({1, 3, 4}), Polynomial({Complex(), Complex(1, -1), Complex(3, 5)})) ==
-//     //         Polynomial({Complex(), Complex(1, -1), Complex(6, 2), Complex(13, 11), Complex(12, 20)}));
-// }
+void fourierMultiplicationTests()
+{
+    Polynomial p1({1, 2, 3, 4, 5});
+    assert(Polynomial::discreteFourierTransformMultiplication(p1, p1) == Polynomial({1, 4, 10, 20, 35, 44, 46, 40, 25}));
+    assert(Polynomial::discreteFourierTransformMultiplication(Polynomial({1, 1}), Polynomial({1, 1})) == Polynomial({1, 2, 1}));
+    // assert(Polynomial::discreteFourierTransformMultiplication(Polynomial({1, 3, 4}), Polynomial({Complex(), Complex(1, -1), Complex(3, 5)})) ==
+    //         Polynomial({Complex(), Complex(1, -1), Complex(6, 2), Complex(13, 11), Complex(12, 20)}));
+}
 
 void derivativeTests()
 {

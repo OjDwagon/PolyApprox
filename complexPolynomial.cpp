@@ -1,13 +1,20 @@
-#include "ComplexPolynomial.h"
+#include "complexPolynomial.h"
 #include <vector>
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <functional>
 
 using namespace std;
 
 ComplexPolynomial::ComplexPolynomial():
     GenericPolynomial<Complex, ComplexPolynomial>()
+{
+
+}
+
+ComplexPolynomial::ComplexPolynomial(const vector<double>& coefficients):
+    GenericPolynomial<Complex, ComplexPolynomial>(coefficients)
 {
 
 }
@@ -162,7 +169,6 @@ unsigned int ComplexPolynomial::getNextPowerOfTwo(unsigned int n)
 {
     return static_cast<unsigned int>(pow(2, ceil(log2(n))));
 }
-
 
 ComplexPolynomial operator+(Complex lhs, const ComplexPolynomial& rhs)
 {

@@ -13,6 +13,7 @@ class ComplexPolynomial: public GenericPolynomial<Complex, ComplexPolynomial>
 {
     public:
         ComplexPolynomial();
+        ComplexPolynomial(const std::vector<double>& coefficients);
         ComplexPolynomial(const std::vector<Complex>& coefficients);
         ComplexPolynomial(const std::initializer_list<Complex>& coefficients);
         ComplexPolynomial operator*(const ComplexPolynomial& rhs) const;

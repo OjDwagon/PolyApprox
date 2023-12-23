@@ -19,8 +19,18 @@ class RealPolynomial: public GenericPolynomial<double, RealPolynomial>
         RealPolynomial operator*(double rhs) const;
         friend std::ostream& operator<<(std::ostream& out, const RealPolynomial& rhs);
 
+        /**
+         * Returns the product of 2 polynomials, implemented using the Discrete Fourier Transform via ComplexPolynomials in loglinear time
+         * 
+         * @param lhs the first polynomial to multiply
+         * @param rhs the second polynomial to multiply
+         * 
+         * @returns the polynomial lhs * rhs
+        */
+        static RealPolynomial discreteFourierTransformMultiplication(const RealPolynomial& lhs, const RealPolynomial& rhs);
+
     protected:
-    
+        static double epsilon_; // Constant used for double comparison, doubles different by less than this amount are considered equal
 };
 
 /**
