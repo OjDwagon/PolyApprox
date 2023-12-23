@@ -24,21 +24,21 @@ class RealPolynomial: public GenericPolynomial<double, RealPolynomial>
 };
 
 /**
- * Adds a double to a Polynomial, the double will be treated as a degree 0 polynomial
+ * Adds a double to a RealPolynomial, the double will be treated as a degree 0 RealPolynomial
  * 
  * @relatesalso RealPolynomial
 */
 RealPolynomial operator+(double lhs, const RealPolynomial& rhs);
 
 /**
- * Subtracts a double to a Polynomial, the double will be treated as a degree 0 polynomial
+ * Subtracts a double to a RealPolynomial, the double will be treated as a degree 0 RealPolynomial
  * 
  * @relatesalso RealPolynomial
 */
 RealPolynomial operator-(double lhs, const RealPolynomial& rhs);
 
 /**
- * Multiplies a Polynomial by a constant
+ * Multiplies a RealPolynomial by a constant
  * 
  * @relatesalso RealPolynomial
 */

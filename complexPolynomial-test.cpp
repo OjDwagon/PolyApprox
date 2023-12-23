@@ -15,12 +15,12 @@ int main()
     evaluationTests();
     comparisonTests();
     additionTests();
-    // subtractionTests();
-    // basicMultiplicationTests();
-    // distributiveMultiplicationTests();
-    // fourierMultiplicationTests();
-    // derivativeTests();
-    // exponentiationTests();
+    subtractionTests();
+    basicMultiplicationTests();
+    distributiveMultiplicationTests();
+    fourierMultiplicationTests();
+    derivativeTests();
+    exponentiationTests();
     
 
     cout << "All tests passed." << endl;
