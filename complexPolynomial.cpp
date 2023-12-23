@@ -7,6 +7,8 @@
 
 using namespace std;
 
+function<bool(Complex, Complex)> ComplexPolynomial::comp = std::equal_to<Complex>();
+
 ComplexPolynomial::ComplexPolynomial():
     GenericPolynomial<Complex, ComplexPolynomial>()
 {

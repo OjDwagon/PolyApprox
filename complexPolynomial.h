@@ -5,6 +5,7 @@
 #include "complex.h"
 #include <vector>
 #include <iostream>
+#include <functional>
 
 /**
  * A class the models complex valued polynomials of a non-negative degree and their operations (excluding division)
@@ -57,7 +58,10 @@ class ComplexPolynomial: public GenericPolynomial<Complex, ComplexPolynomial>
          * @returns the rounded up number
         */
         static unsigned int getNextPowerOfTwo(unsigned int n);
-        
+
+        friend GenericPolynomial<Complex, ComplexPolynomial>;
+
+        static std::function<bool(Complex, Complex)> comp;
 };
 
 /**

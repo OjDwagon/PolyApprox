@@ -2,7 +2,6 @@
 #define GENERIC_POLYNOMIAL_H
 
 #include <vector>
-#include <functional>
 
 /**
  * @brief A generic polynomial class modeling polynomials of non-negative degree and their operators (excluding division)
@@ -18,7 +17,7 @@
  * @tparam TrueType, the type of the inheriting child, used to ensure methods return the appropriate child type
  *          children must implement the TrueType operator*(const TrueType&) method
  *          to implement TrueType operator*(const T&) method, children can cast this to be a parent and use the parent implementation
- *          children must also implement bool equals(const T& a, const T& b)
+ *          children must also have a accessible function<bool(const T&, const T&)> comp; static member accessible by Generic Polynomial
 */
 template <typename T, typename TrueType>
 class GenericPolynomial
@@ -156,7 +155,6 @@ class GenericPolynomial
     protected:
         unsigned int degree_;
         std::vector<T> coefficients_;
-        static std::function<bool(const T&, const T&)> comp;
         
         /**
          * Removes all leading zero coefficients (ignoring the constant coefficent x^0)
@@ -382,7 +380,7 @@ bool GenericPolynomial<T, TrueType>::operator==(const TrueType& rhs) const
 
     // Check if all coefficients match
     for(unsigned int i = 0; i < coefficients_.size(); ++i){
-        if(!comp(coefficients_[i], rhs.coefficients_[i])){
+        if(!TrueType::comp(coefficients_[i], rhs.coefficients_[i])){
             return false;
         }
     }
@@ -401,7 +399,7 @@ bool GenericPolynomial<T, TrueType>::operator!=(const TrueType& rhs) const
 
     // Check if all coefficients match
     for(unsigned int i = 0; i < coefficients_.size(); ++i){
-        if(comp(coefficients_[i], rhs.coefficients_[i])){
+        if(TrueType::comp(coefficients_[i], rhs.coefficients_[i])){
             return false;
         }
     }
@@ -413,7 +411,7 @@ template<typename T, typename TrueType>
 bool GenericPolynomial<T, TrueType>::operator==(double rhs) const
 {
     if(degree_ == 0){
-        return comp(rhs, coefficients_[0]);
+        return TrueType::comp(rhs, coefficients_[0]);
     }
 
     return false;
@@ -426,7 +424,7 @@ bool GenericPolynomial<T, TrueType>::operator!=(double rhs) const
         return true;
     }
 
-    return !comp(rhs, coefficients_[0]);
+    return !TrueType::comp(rhs, coefficients_[0]);
 }
 
 template<typename T, typename TrueType>
@@ -549,7 +547,7 @@ void GenericPolynomial<T, TrueType>::unpad()
 {
     int counter = 0;
     for(unsigned int i = degree_; i > 0; --i){
-        if(comp(coefficients_[i], T())){
+        if(TrueType::comp(coefficients_[i], T())){
             ++counter;
         }
         else{
@@ -563,7 +561,5 @@ void GenericPolynomial<T, TrueType>::unpad()
     }
 }
 
-template<typename T, typename TrueType>
-std::function<bool(const T&, const T&)> GenericPolynomial<T, TrueType>::comp = std::equal_to<T>();
 
 #endif

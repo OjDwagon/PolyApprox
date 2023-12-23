@@ -5,6 +5,7 @@
 #include "genericPolynomial.h"
 
 #include <iostream>
+#include <functional>
 
 /**
  * A class the models real valued polynomials of a non-negative degree and their operations (excluding division)
@@ -31,6 +32,8 @@ class RealPolynomial: public GenericPolynomial<double, RealPolynomial>
 
     protected:
         static double epsilon_; // Constant used for double comparison, doubles different by less than this amount are considered equal
+        friend GenericPolynomial<double, RealPolynomial>;
+        static std::function<bool(double, double)> comp;
 };
 
 /**

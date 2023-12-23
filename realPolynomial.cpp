@@ -1,30 +1,29 @@
 #include "realPolynomial.h"
 #include "complexPolynomial.h"
 #include <vector>
+#include <functional>
 
 using namespace std;
 
 double RealPolynomial::epsilon_ = 0.000001;
+function <bool(double, double)> RealPolynomial::comp = [](double a, double b) -> bool {return ((a - b) < epsilon_) && ((b - a) < epsilon_);};
 
 RealPolynomial::RealPolynomial():
     GenericPolynomial<double, RealPolynomial>()
 {
-    // Set the function's comparator to use double comparison instead of the default equality
-    GenericPolynomial<double, RealPolynomial>::comp = [](double a, double b) -> bool {return ((a - b) < epsilon_) && ((b - a) < epsilon_);};
+
 }
 
 RealPolynomial::RealPolynomial(const vector<double>& coefficients):
     GenericPolynomial<double, RealPolynomial>(coefficients)
 {
-    // Set the function's comparator to use double comparison instead of the default equality
-    GenericPolynomial<double, RealPolynomial>::comp = [](double a, double b) -> bool {return ((a - b) < epsilon_) && ((b - a) < epsilon_);};
+    
 }
 
 RealPolynomial::RealPolynomial(const initializer_list<double>& coefficients):
     GenericPolynomial<double, RealPolynomial>(coefficients)
 {
-    // Set the function's comparator to use double comparison instead of the default equality
-    GenericPolynomial<double, RealPolynomial>::comp = [](double a, double b) -> bool {return ((a - b) < epsilon_) && ((b - a) < epsilon_);};
+    
 }
 
 RealPolynomial RealPolynomial::operator*(const RealPolynomial& rhs) const
