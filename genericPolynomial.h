@@ -5,19 +5,21 @@
 
 /**
  * @brief A generic polynomial class modeling polynomials of non-negative degree and their operators (excluding division)
- * Designed to be inherited from to support different types such as complex numbers
- * Children must implement an TrueType operator*(const TrueType&) overload and their own constructors
- * Children also must implement any required friend functions and global operator overloads
  * 
  * @tparam T, the type of the coefficients of the polynomial, must have the following defined:
- *          default constructor T() which evaluates to the 0 element 
- *          any number T^0 = T(1), the multiplicative identity element
- *          addition, subtraction, multiplication
+ * - default constructor T() which evaluates to the 0 element,
+ * - any number T^0 = T(1), the multiplicative identity element,
+ * - addition, subtraction, multiplication
  * 
- * @tparam TrueType, the type of the inheriting child, used to ensure methods return the appropriate child type
- *          children must implement the TrueType operator*(const TrueType&) method
- *          to implement TrueType operator*(const T&) method, children can cast this to be a parent and use the parent implementation
- *          children must also have a accessible function<bool(const T&, const T&)> comp; static member accessible by Generic Polynomial
+ * @tparam TrueType, the type of the inheriting child, used to ensure methods return the appropriate child type, children must:
+ * - implement their own constructors
+ * - children must implement the TrueType operator*(const TrueType&) and TrueType operator(const T&) method overload
+ * - children must also have a accessible function<bool(const T&, const T&)> comp; static member accessible by Generic Polynomial
+ * - children must implement their own global operator overloads and 
+ * 
+ * @note Designed to be inherited from to support different types such as complex numbers
+ * @note To implement TrueType operator*(const T&) method, children can cast their this pointer to be a parent and use the parent implementation
+ * @note To make the comp member accessible, it is recommended to make the parent class a friend
 */
 template <typename T, typename TrueType>
 class GenericPolynomial
@@ -31,7 +33,7 @@ class GenericPolynomial
         /**
          * GenericPolynomial constructor given coefficients
          * 
-         * @tparam V the type of the coefficients, must support casting to a Complex number
+         * @tparam V the type of the coefficients, must support casting to a type T number
          * @param coefficients a vector of coefficeints, the ith element of the vector is used as the coefficient for x^i
         */
         template <typename V>
@@ -41,7 +43,7 @@ class GenericPolynomial
          * GenericPolynomial constructor given coefficients
          * 
          * @tparam V the type of the coefficients, must support casting to a Complex number
-         * @param coefficients an initinialization of complex numbers, the ith element of the vector is used as the coefficient for x^i
+         * @param coefficients an initialization list of type V, the ith element of the list is used as the coefficient for x^i
         */
         template <typename V>
         GenericPolynomial(const std::initializer_list<V>& coefficients);       

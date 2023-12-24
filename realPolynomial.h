@@ -8,14 +8,30 @@
 #include <functional>
 
 /**
- * A class the models real valued polynomials of a non-negative degree and their operations (excluding division)
+ * @brief A class the models real valued polynomials of a non-negative degree and their operations (excluding division)
 */
 class RealPolynomial: public GenericPolynomial<double, RealPolynomial>
 {
     public:
+        /**
+         * Default constructor for a RealPolynomial, defaults to constant 0
+        */
         RealPolynomial();
+
+        /**
+         * RealPolynomial constructor given coefficients
+         * 
+         * @param coefficients a vector of coefficeints, the ith element of the vector is used as the coefficient for x^i
+        */
         RealPolynomial(const std::vector<double>& coefficients);
+
+        /**
+         * RealPolynomial constructor given coefficients
+         * 
+         * @param coefficients an initialization list of type double, the ith element of the list is used as the coefficient for x^i
+        */
         RealPolynomial(const std::initializer_list<double>& coefficients);
+        
         RealPolynomial operator*(const RealPolynomial& rhs) const;
         RealPolynomial operator*(double rhs) const;
         friend std::ostream& operator<<(std::ostream& out, const RealPolynomial& rhs);

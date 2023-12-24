@@ -13,9 +13,30 @@
 class ComplexPolynomial: public GenericPolynomial<Complex, ComplexPolynomial>
 {
     public:
+        /**
+         * Default constructor for a ComplexPolynomial, defaults to constant 0
+        */
         ComplexPolynomial();
+
+        /**
+         * ComplexPolynomial constructor given coefficients
+         * 
+         * @param coefficients a vector of coefficeints, the ith element of the vector is used as the coefficient for x^i
+        */
         ComplexPolynomial(const std::vector<double>& coefficients);
+
+        /**
+         * ComplexPolynomial constructor given coefficients
+         * 
+         * @param coefficients a vector of coefficeints, the ith element of the vector is used as the coefficient for x^i
+        */
         ComplexPolynomial(const std::vector<Complex>& coefficients);
+
+        /**
+         * ComplexPolynomial constructor given coefficients
+         * 
+         * @param coefficients an initialization list of type Complex, the ith element of the list is used as the coefficient for x^i
+        */
         ComplexPolynomial(const std::initializer_list<Complex>& coefficients);
         ComplexPolynomial operator*(const ComplexPolynomial& rhs) const;
         ComplexPolynomial operator*(Complex rhs) const;

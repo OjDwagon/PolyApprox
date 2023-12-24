@@ -28,7 +28,15 @@ RealPolynomial::RealPolynomial(const initializer_list<double>& coefficients):
 
 RealPolynomial RealPolynomial::operator*(const RealPolynomial& rhs) const
 {
-    return GenericPolynomial::distributiveMultiplication(*this, rhs);
+    unsigned int minDegree = min(degree_, rhs.degree_);
+    unsigned int diff = rhs.degree_ + degree_ -  2 * minDegree;
+    if(minDegree >= 4096 && diff < minDegree / 2 ){ // Use fourier transform division when the polynomials are balanced and of a high degree
+        // Convert to complex polynomials, perform multiplication, then return answer as real polynomial
+        return discreteFourierTransformMultiplication(*this, rhs);
+    }
+    else{ // Else use distributive multiplication
+        return distributiveMultiplication(*this, rhs);
+    }
 }
 
 RealPolynomial RealPolynomial::operator*(double rhs) const

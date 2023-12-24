@@ -35,7 +35,7 @@ ComplexPolynomial::ComplexPolynomial(const initializer_list<Complex>& coefficien
 
 ComplexPolynomial ComplexPolynomial::operator*(const ComplexPolynomial& rhs) const
 {
-    if(max(degree_, rhs.degree_) > 190){ // Discrete Fourier transform is more efficient once multiplying over 190 degrees
+    if(min(degree_, rhs.degree_) >= 194){ // Discrete Fourier transform is more efficient once multiplying over 194 degrees
         return discreteFourierTransformMultiplication(*this, rhs);
     }
     else{
